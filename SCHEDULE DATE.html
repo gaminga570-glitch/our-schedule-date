@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>schedule date ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            /* Soft Pink to Soft Blue Gradient */
+            background: linear-gradient(135deg, #ffc0cb, #add8e6);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            width: 100vw;
+            padding: 20px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+            position: relative;
+        }
+
+        /* --- PAGE 1: Runaway Button --- */
+        #page1 {
+            overflow: hidden;
+        }
+        
+        #runawayBtn {
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background-color: white;
+            color: #ff6b81;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            cursor: pointer;
+            position: absolute;
+            transition: all 0.25s ease-out;
+            z-index: 10;
+            white-space: nowrap;
+            touch-action: manipulation; 
+        }
+
+        /* --- PAGE 2: Schedule & Outfits --- */
+        #page2 {
+            justify-content: flex-start;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        h1.intro-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .intro-text {
+            text-align: center;
+            font-size: 1rem;
+            color: #555;
+            padding: 0 15px;
+            margin-bottom: 30px;
+        }
+
+        /* The Cute Alternating Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .left { left: 0; }
+        .right { left: 50%; }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: #fff;
+            border: 4px solid #ffc0cb;
+            top: 20px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .right::after {
+            left: -10px;
+        }
+
+        .content {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+        }
+
+        .content h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #ff6b81;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .content p {
+            color: #333;
+            font-size: 1.05rem;
+        }
+
+        /* Outfit Notes */
+        .outfit-notes {
+            width: 100%;
+            max-width: 500px;
+            margin: 40px auto 20px auto;
+            text-align: center;
+        }
+
+        .outfit-notes h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .outfit-grid {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .outfit-card {
+            flex: 1;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gender-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .outfit-card h4 {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .outfit-card ul {
+            list-style: none;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        .outfit-card ul li {
+            margin-bottom: 4px;
+        }
+
+        .next-btn {
+            margin-top: 20px;
+            margin-bottom: 40px;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff6b81;
+            background: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            touch-action: manipulation;
+        }
+        
+        .next-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- PAGE 3: Promise --- */
+        #page3 {
+            padding: 40px;
+        }
+        #page3 h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.15);
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media screen and (max-width: 600px) {
+            .timeline::after { left: 31px; }
+            .container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .container::after {
+                left: 21px;
+            }
+            .right { left: 0%; }
+            h1.intro-title { font-size: 3rem; }
+            #page3 h1 { font-size: 3rem; }
+            .outfit-grid { flex-direction: column; } /* Stacks outfit cards on very small screens */
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="teman.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="page1" class="page active">
+        <button id="runawayBtn">click here sayang</button>
+    </div>
+
+    <div id="page2" class="page">
+        <h1 class="intro-title">Our Date</h1>
+        <p class="intro-text">hari yang dijanjikan, akan saya tunaikan ❤️</p>
+
+        <div class="timeline">
+            <div class="container left">
+                <div class="content">
+                    <h2>8:00 AM</h2>
+                    <p>Bertolak dari Serendah ke Seri Kembangan 🚗</p>
+                </div>
+            </div>
+            <div class="container right">
+                <div class="content">
+                    <h2>9:00 AM</h2>
+                    <p>Tiba di Seri Kembangan</p>
+                </div>
+            </div>
+            <div class="container left">
+                <div class="content">
+                    <h2>9:30 AM</h2>
+                    <p>Bertolak ke Sg Besi, beli cincin hihi 💍</p>
+                </div>
+            </div>
+            <div class="container right">
+                <div class="content">
+                    <h2>10:30 AM</h2>
+                    <p>Tiba di Sg Besi</p>
+                </div>
+            </div>
+            <div class="container left">
+                <div class="content">
+                    <h2>11:30 AM - 12:00 PM</h2>
+                    <p>Bertolak ke Kenanga Mall cari baju sayang (jika perlu) 👗</p>
+                </div>
+            </div>
+            <div class="container right">
+                <div class="content">
+                    <h2>12:00 PM</h2>
+                    <p>Bertolak ke saloon 💇‍♀️</p>
+                </div>
+            </div>
+            <div class="container left">
+                <div class="content">
+                    <h2>4:00 PM - 5:00 PM</h2>
+                    <p>Bertolak ke Bazaar Putrajaya cari juadah berbuka 🍢</p>
+                </div>
+            </div>
+            <div class="container right">
+                <div class="content">
+                    <h2>7:00 PM</h2>
+                    <p>Cari port berbuka yang best</p>
+                </div>
+            </div>
+            <div class="container left">
+                <div class="content">
+                    <h2>7:30 PM</h2>
+                    <p>Selamat berbuka puasa sayang! 🌙</p>
+                </div>
+            </div>
+            <div class="container right">
+                <div class="content">
+                    <h2>8:30 PM - 9:00 PM</h2>
+                    <p>Hantar sayang pulang dengan selamat 🥰</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="outfit-notes">
+            <h3>Dress Code</h3>
+            <div class="outfit-grid">
+                <div class="outfit-card">
+                    <span class="gender-icon">👨</span>
+                    <h4>Untuk bby</h4>
+                    <ul>
+                        <li>👕 Soft Blue Shirt</li>
+                        <li>👖 Nude Pants</li>
+                    </ul>
+                </div>
+                <div class="outfit-card">
+                    <span class="gender-icon">👩</span>
+                    <h4>Untuk Sayang</h4>
+                    <ul>
+                        <li>👗 Soft Blue Outfit</li>
+                        <li>(Dress/Blouse)</li>
+                        <li>👖 Cream/White</li>
+                        <li>(Skirt/Pants)</li>
+                        <li>(untuk outfit kamu terserah janji matchy hihi)</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="intro-text">Kita matchy-matchy k baru cute! 🥰</p>
+        </div>
+
+        <button class="next-btn" onclick="goToPage(3)">Continue</button>
+    </div>
+
+    <div id="page3" class="page">
+        <h1>saya janji<br>hari tersebut<br>akan menjadi<br>hari terindah buat kamu ❤️</h1>
+    </div>
+
+    <script>
+        // --- PAGE 1 RUNAWAY LOGIC (Phone Friendly) ---
+        const btn = document.getElementById('runawayBtn');
+        let clickCount = 0;
+        
+        const phrases = [
+            "hehe sini lahh", 
+            "tak dapat! 😜", 
+            "laju sikit sayang", 
+            "try lagi sayang", 
+            "penat ke tuuu", 
+            "sikit lagi!", 
+            "sini lah sayang", 
+            "jangan give up!", 
+            "okay last try!"
+        ];
+
+        function centerButton() {
+            btn.style.left = (window.innerWidth / 2 - btn.offsetWidth / 2) + "px";
+            btn.style.top = (window.innerHeight / 2 - btn.offsetHeight / 2) + "px";
+        }
+        window.onload = centerButton;
+        window.onresize = centerButton;
+
+        function runAway() {
+            if (clickCount < 10) {
+                btn.innerText = phrases[clickCount % phrases.length];
+                
+                const maxX = window.innerWidth - btn.offsetWidth - 20;
+                const maxY = window.innerHeight - btn.offsetHeight - 20;
+                
+                const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+                const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+                
+                btn.style.left = randomX + "px";
+                btn.style.top = randomY + "px";
+                
+                clickCount++;
+            } else {
+                goToPage(2);
+            }
+        }
+
+        btn.addEventListener('click', runAway);
+
+        // --- PAGE TRANSITIONS & MUSIC ---
+        function goToPage(pageNum) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            const targetPage = document.getElementById('page' + pageNum);
+            targetPage.classList.add('active');
+            
+            window.scrollTo(0, 0);
+
+            if (pageNum === 2) {
+                const audio = document.getElementById('bgMusic');
+                audio.play().catch(e => {
+                    console.log("Audio autoplay failed.", e);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
